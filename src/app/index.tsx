@@ -1,9 +1,16 @@
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 
 export default function Index() {
   return (
     <View className="flex-1 items-center justify-center">
-      <Text className="">Index</Text>
+      <Image
+        source={require("@/assets/logo.png")}
+        resizeMode="contain"
+        className="h-8"
+      />
+      <Text className="text-zinc-400 font-regular text-center text-lg mt-3">
+        Convide seus amigos e planeje sua{`\n`} proxima viagem
+      </Text>
     </View>
   );
 }
