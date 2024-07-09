@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Image, Keyboard, Text, View } from "react-native";
 import {
   ArrowRight,
@@ -24,6 +24,7 @@ import { Calendar } from "@/components/calendar";
 import { GuestEmail } from "@/components/email";
 import { router } from "expo-router";
 import { tripServer } from "@/server/trip-server";
+import Loading from "@/components/loading";
 
 enum StepForm {
   TRIP_DETAILS = 1,
@@ -39,6 +40,7 @@ enum MODAL {
 export default function Index() {
   //LOADING
   const [isCreateTrip, setIsCreateTrip] = useState<boolean>(false);
+  const [isGettingTrip, setIsGettingTrip] = useState<boolean>(true);
 
   //DATA
   const [stepForm, setStepForm] = useState(StepForm.TRIP_DETAILS);
@@ -147,6 +149,32 @@ export default function Index() {
       console.error(error);
       setIsCreateTrip(false);
     }
+  }
+
+  async function getTrip() {
+    try {
+      const tripID = await tripStorage.get();
+      if (!tripID) {
+        return setIsGettingTrip(false);
+      }
+
+      const trip = await tripServer.getById(tripID);
+
+      if (trip) {
+        return router.navigate("/trip/" + trip.id);
+      }
+    } catch (error) {
+      setIsGettingTrip(false);
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getTrip();
+  }, []);
+
+  if (isGettingTrip) {
+    return <Loading />;
   }
 
   return (
