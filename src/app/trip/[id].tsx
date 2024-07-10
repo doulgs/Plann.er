@@ -51,6 +51,10 @@ export default function Trip() {
     try {
       setIsLoadingTrip(true);
 
+      if (tripParams.participant) {
+        setShowModal(MODAL.CONFIRM_ATTENDANCE);
+      }
+
       if (!tripParams.id) {
         return router.back();
       }
@@ -158,6 +162,26 @@ export default function Trip() {
     }
   }
 
+  async function handleRemoveTrip() {
+    try {
+      Alert.alert("Abandonar viagem", "Tem certeza que deseja abandonar essa viagem?", [
+        {
+          text: "Não",
+          style: "cancel",
+        },
+        {
+          text: "Sim, tenho certeza",
+          onPress: async () => {
+            await tripStorage.remove();
+            router.navigate("/");
+          },
+        },
+      ]);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
     getTripDetails();
   }, []);
@@ -228,6 +252,10 @@ export default function Trip() {
 
           <Button onPress={handleUpdateTrip} isLoading={isUpdatingTrip}>
             <Button.Title>Atualizar viagem</Button.Title>
+          </Button>
+
+          <Button variant="secondary" onPress={handleRemoveTrip}>
+            <Button.Title>Sair da viagem</Button.Title>
           </Button>
         </View>
       </Modal>
