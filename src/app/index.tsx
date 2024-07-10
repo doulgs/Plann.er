@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { Alert, Image, Keyboard, Text, View } from "react-native";
-import {
-  ArrowRight,
-  AtSign,
-  Calendar as IconCalendar,
-  MapPin,
-  Settings2,
-  UserRoundPlus,
-} from "lucide-react-native";
+import { ArrowRight, AtSign, Calendar as IconCalendar, MapPin, Settings2, UserRoundPlus } from "lucide-react-native";
 import dayjs from "dayjs";
 import { DateData } from "react-native-calendars";
 
@@ -53,22 +46,12 @@ export default function Index() {
   const [showModal, setShowModal] = useState(MODAL.NONE);
 
   function handleNextStepForm() {
-    if (
-      destination.trim().length === 0 ||
-      !selectedDates.startsAt ||
-      !selectedDates.endsAt
-    ) {
-      return Alert.alert(
-        "Detalhes da viagem",
-        "Preencha todas as informaçãoes da viagem para seguir"
-      );
+    if (destination.trim().length === 0 || !selectedDates.startsAt || !selectedDates.endsAt) {
+      return Alert.alert("Detalhes da viagem", "Preencha todas as informaçãoes da viagem para seguir");
     }
 
     if (destination.length < 4) {
-      return Alert.alert(
-        "Detalhes da viagem",
-        "O destino deve ter pelo menos 4 caracteres"
-      );
+      return Alert.alert("Detalhes da viagem", "O destino deve ter pelo menos 4 caracteres");
     }
 
     if (stepForm === StepForm.TRIP_DETAILS) {
@@ -92,9 +75,7 @@ export default function Index() {
   }
 
   function handleRemoveEmail(emailToRemove: string) {
-    setEmailsToInvite((prevState) =>
-      prevState.filter((email) => email !== emailToRemove)
-    );
+    setEmailsToInvite((prevState) => prevState.filter((email) => email !== emailToRemove));
   }
 
   function handleAddEmail() {
@@ -102,9 +83,7 @@ export default function Index() {
       return Alert.alert("Email inválido", "Por favor, digite um email válido");
     }
 
-    const emailsAlreadyExist = emailsToInvite.find(
-      (email) => email === emailToInvite
-    );
+    const emailsAlreadyExist = emailsToInvite.find((email) => email === emailToInvite);
 
     if (emailsAlreadyExist) {
       return Alert.alert("Email", "Este e-mail já foi adicionado");
@@ -179,11 +158,7 @@ export default function Index() {
 
   return (
     <View className="flex-1 items-center justify-center px-5">
-      <Image
-        source={require("@/assets/logo.png")}
-        resizeMode="contain"
-        className="h-8"
-      />
+      <Image source={require("@/assets/logo.png")} resizeMode="contain" className="h-8" />
 
       <Image source={require("@/assets/bg.png")} className="absolute" />
 
@@ -209,9 +184,7 @@ export default function Index() {
             editable={stepForm === StepForm.TRIP_DETAILS}
             onFocus={() => Keyboard.dismiss()}
             showSoftInputOnFocus={false}
-            onPressIn={() =>
-              stepForm === StepForm.TRIP_DETAILS && setShowModal(MODAL.CALENDAR)
-            }
+            onPressIn={() => stepForm === StepForm.TRIP_DETAILS && setShowModal(MODAL.CALENDAR)}
             value={selectedDates.formatDatesInText}
           />
         </Input>
@@ -219,10 +192,7 @@ export default function Index() {
         {stepForm === StepForm.ADD_EMAIL && (
           <>
             <View className="border-b py-3 border-zinc-800">
-              <Button
-                variant="secondary"
-                onPress={() => setStepForm(StepForm.TRIP_DETAILS)}
-              >
+              <Button variant="secondary" onPress={() => setStepForm(StepForm.TRIP_DETAILS)}>
                 <Button.Title>Alterar local/data</Button.Title>
                 <Settings2 color={colors.zinc[200]} size={20} />
               </Button>
@@ -232,11 +202,7 @@ export default function Index() {
               <Input.Field
                 placeholder="Quem estará na viagem?"
                 autoCorrect={false}
-                value={
-                  emailsToInvite.length > 0
-                    ? `${emailsToInvite.length} pessoa(s) convidada(s)`
-                    : ""
-                }
+                value={emailsToInvite.length > 0 ? `${emailsToInvite.length} pessoa(s) convidada(s)` : ""}
                 onPressIn={() => {
                   Keyboard.dismiss(), setShowModal(MODAL.GUESTS);
                 }}
@@ -247,21 +213,14 @@ export default function Index() {
         )}
 
         <Button onPress={handleNextStepForm} isLoading={isCreateTrip}>
-          <Button.Title>
-            {stepForm === StepForm.TRIP_DETAILS
-              ? "Continuar"
-              : "Confirmar viagem"}
-          </Button.Title>
+          <Button.Title>{stepForm === StepForm.TRIP_DETAILS ? "Continuar" : "Confirmar viagem"}</Button.Title>
           <ArrowRight color={colors.lime[950]} size={20} />
         </Button>
       </View>
 
       <Text className="text-zinc-500 font-regular text-center text-base">
-        Ao planejar sua viagem pela plann.er você automaticamente concorda com
-        nossos{" "}
-        <Text className="text-zinc-300 underline">
-          termos de uso e políticas de privacidade.
-        </Text>
+        Ao planejar sua viagem pela plann.er você automaticamente concorda com nossos{" "}
+        <Text className="text-zinc-300 underline">termos de uso e políticas de privacidade.</Text>
       </Text>
 
       <Modal
@@ -271,11 +230,7 @@ export default function Index() {
         onClose={() => setShowModal(MODAL.NONE)}
       >
         <View className="gap-4 mt-4">
-          <Calendar
-            minDate={dayjs().toISOString()}
-            onDayPress={handleSelectDate}
-            markedDates={selectedDates.dates}
-          />
+          <Calendar minDate={dayjs().toISOString()} onDayPress={handleSelectDate} markedDates={selectedDates.dates} />
 
           <Button onPress={() => setShowModal(MODAL.NONE)}>
             <Button.Title>Confirmar datas</Button.Title>
@@ -292,16 +247,10 @@ export default function Index() {
         <View className="my-2 flex-wrap gap-2 border-b border-zinc-800 py-5 items-start">
           {emailsToInvite.length > 0 ? (
             emailsToInvite.map((email) => (
-              <GuestEmail
-                key={email}
-                email={email}
-                onRemove={() => handleRemoveEmail(email)}
-              />
+              <GuestEmail key={email} email={email} onRemove={() => handleRemoveEmail(email)} />
             ))
           ) : (
-            <Text className="text-zinc-600 text-base font-regular">
-              Nenhum e-mail adicionado
-            </Text>
+            <Text className="text-zinc-600 text-base font-regular">Nenhum e-mail adicionado</Text>
           )}
         </View>
 
