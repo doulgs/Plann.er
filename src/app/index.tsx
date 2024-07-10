@@ -166,7 +166,7 @@ export default function Index() {
         Convide seus amigos e planeje sua{`\n`} proxima viagem
       </Text>
 
-      <View className="w-full bg-zinc-900 p-4 rounded-xl my-8 border border-zinc-800">
+      <View className="w-96 bg-zinc-900 p-4 rounded-xl my-8 border border-zinc-800">
         <Input>
           <MapPin color={colors.zinc[400]} size={20} />
           <Input.Field
